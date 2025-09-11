@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BIN Generator | Tools Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'SF Pro Display',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:linear-gradient(135deg,#f0f3f8,#d9e2ef);display:flex;justify-content:center;padding:20px;min-height:100vh;}
+.container{background:rgba(255,255,255,0.25);backdrop-filter:blur(20px);border-radius:25px;box-shadow:0 10px 40px rgba(0,0,0,0.12);padding:20px;max-width:600px;width:100%;text-align:center;}
+h1{font-size:22px;margin-bottom:12px;color:#0a0a0a;}
+section{margin:18px 0;padding:16px;border-radius:16px;background:rgba(255,255,255,0.16);backdrop-filter:blur(10px);box-shadow:0 3px 12px rgba(0,0,0,0.06);}
+label{display:block;text-align:left;margin-bottom:8px;font-weight:600;color:#0a0a0a;font-size:14px;}
+.form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}
+select,input[type="number"]{padding:12px;border-radius:12px;border:2px solid rgba(52,199,89,0.35);background:rgba(255,255,255,0.6);outline:none;font-size:14px;color:#0a0a0a;}
+select{min-width:150px;}
+input[type="number"]{width:110px;}
+.primary-btn{display:inline-block;background:#34C759;border:2px solid #34C759;color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.12);transition:all .22s;}
+.primary-btn:hover{background:#28a745;transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,0.14);}
+.secondary-btn{background:#f1f1f1;border:2px solid rgba(52,199,89,0.35);color:#0a0a0a;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600;margin-top:14px;width:100%;}
+.output-box{white-space:pre-wrap;overflow:auto;max-height:220px;border-radius:12px;padding:12px;border:2px solid rgba(52,199,89,0.35);background:rgba(255,255,255,0.6);text-align:left;color:#0a0a0a;font-family:monospace;margin:0 auto;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;}
+.toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(-6px);}
+@media (max-width:520px){.container{padding:16px;} select,input[type="number"]{width:100%;} .form-row{flex-direction:column;align-items:stretch;} }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>BIN Generator</h1>
+  <section>
+    <div style="text-align:left;margin-bottom:10px;">
+      <label for="binType">Select BIN Type</label>
+      <div class="form-row">
+        <select id="binType">
+          <option value="ame">Amex (3)</option>
+          <option value="vis">Visa (4)</option>
+          <option value="mas">MasterCard (5)</option>
+          <option value="dis">Discover (6)</option>
+        </select>
+        <div style="flex:1;"></div>
+        <div style="text-align:right;">
+          <label for="count" style="margin-bottom:6px;font-weight:600;color:#0a0a0a;">Number of BINs</label>
+          <input id="count" type="number" min="1" value="10">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+        <button id="generateBtn" class="primary-btn">Generate BINs</button>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div id="output" class="output-box"></div>
+      <button id="copyBtn" class="secondary-btn">Copy All BINs</button>
+    </div>
+  </section>
+  <div id="toast" class="toast">Copied to clipboard</div>
+</div>
+<script>
+(function(){
+  const firstLetterMap={ame:'3',vis:'4',mas:'5',dis:'6'};
+  const chars='0123456789';
+  const generateBtn=document.getElementById('generateBtn');
+  const copyBtn=document.getElementById('copyBtn');
+  const output=document.getElementById('output');
+  const countInput=document.getElementById('count');
+  const binType=document.getElementById('binType');
+  const toast=document.getElementById('toast');
+  function showToast(text){toast.textContent=text;toast.classList.add('show');setTimeout(()=>{toast.classList.remove('show');},2000);}
+  function generateBins(){
+    const n=Math.max(1,parseInt(countInput.value)||1);
+    const type=binType.value;
+    const prefix=firstLetterMap[type]||'4';
+    const length=6;
+    let out='';
+    for(let j=0;j<n;j++){
+      let bin=prefix;
+      for(let i=1;i<length;i++){
+        bin+=chars.charAt(Math.floor(Math.random()*chars.length));
+      }
+      out+=bin+'\n';
+    }
+    output.textContent=out.trim();
+  }
+  function copyOutput(){
+    const text=output.textContent.trim();
+    if(!text)return;
+    navigator.clipboard.writeText(text).then(()=>{showToast('BINs copied');}).catch(()=>{showToast('Copy failed');});
+  }
+  generateBtn.addEventListener('click',generateBins);
+  copyBtn.addEventListener('click',copyOutput);
+})();
+</script>
+</body>
+</html>
