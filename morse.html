@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morse Code Translator</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --green: #34C759;
+    --green-hover: #30b04e;
+    --red: #FF3B30;
+    --red-hover: #e03028;
+    --glass: rgba(255, 255, 255, 0.2);
+    --text: #000;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; transition: all 0.3s ease; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 2rem; color: var(--text);
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+header { text-align: center; margin-bottom: 2rem; }
+h1 { font-size: 2.5rem; color: var(--green); margin-bottom: 0.5rem; }
+.subtitle { font-size: 1rem; opacity: 0.8; }
+.divider { border: none; height: 2px; background: linear-gradient(90deg, transparent, var(--green), transparent); margin: 1rem 0; }
+
+label { font-weight: 600; margin-bottom: 0.5rem; display: block; color: var(--green); }
+textarea {
+    width: 100%; min-height: 120px; padding: 1rem; border-radius: 15px;
+    border: 2px solid black;
+    background: rgba(255,255,255,0.5);
+    color: var(--text); font-size: 1rem; resize: vertical; backdrop-filter: blur(5px);
+}
+textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 15px rgba(52,199,89,0.3); }
+
+.btn-group { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.5rem; justify-content: center; }
+.btn {
+    padding: 0.8rem 1.5rem; border: none; border-radius: 50px;
+    font-size: 1rem; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 0.5rem;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+.btn:not(.btn-clear) { background: var(--green); }
+.btn:not(.btn-clear):hover { background: var(--green-hover); transform: translateY(-2px); }
+.btn.btn-clear { background: var(--red); }
+.btn.btn-clear:hover { background: var(--red-hover); transform: translateY(-2px); }
+
+.output-actions-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    justify-content: center;
+}
+.action-btn {
+    background: var(--green); border: none; padding: 0.8rem 1.5rem; border-radius: 50px;
+    color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    gap: 0.5rem; font-size: 1rem; font-weight: 600;
+    transition: all 0.3s ease;
+}
+.action-btn:hover { background: var(--green-hover); transform: translateY(-2px); }
+
+.tooltip { position: relative; display: inline-block; }
+.tooltip .tooltiptext {
+    visibility: hidden; width: 120px; background-color: #555; color: #fff;
+    text-align: center; border-radius: 6px; padding: 5px;
+    position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -60px; opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip .tooltiptext::after {
+    content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px;
+    border-width: 5px; border-style: solid; border-color: #555 transparent transparent transparent;
+}
+.tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+
+@media (max-width:768px) {
+    .container { padding: 1rem; }
+    h1 { font-size: 2rem; }
+    .btn-group, .output-actions-container { flex-direction: column; }
+    .btn, .action-btn { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+    <h1>Morse Code Translator</h1>
+    <p class="subtitle">Encode and decode messages with ease</p>
+    <hr class="divider">
+</header>
+
+<div class="input-group">
+    <label for="inputBox">Enter your text or Morse code:</label>
+    <textarea id="inputBox" placeholder="Type your message here..."></textarea>
+</div>
+
+<div class="btn-group">
+    <button class="btn" onclick="encodeText()"><i class="fas fa-code"></i> Encode</button>
+    <button class="btn" onclick="decodeText()"><i class="fas fa-undo"></i> Decode</button>
+    <button class="btn btn-clear" onclick="clearText()"><i class="fas fa-trash"></i> Clear</button>
+    <button class="btn" onclick="playMorse()"><i class="fas fa-play"></i> Play</button>
+</div>
+
+<div class="input-group">
+    <label for="outputBox">Result:</label>
+    <textarea id="outputBox" readonly placeholder="Your translation will appear here..."></textarea>
+    <div class="output-actions-container">
+        <button class="action-btn" onclick="copyOutput()"><i class="fas fa-copy"></i> Copy</button>
+        <button class="action-btn" onclick="speakOutput()"><i class="fas fa-volume-up"></i> Sound</button>
+    </div>
+</div>
+</div>
+
+<script>
+        const morseCode = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+            'Y': '-.--', 'Z': '--..',
+            '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+            '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----',
+            '.': '.-.-.-', ',': '--..--', '?': '..--..', "'": '.----.', '!': '-.-.--',
+            '/': '-..-.', '(': '-.--.', ')': '-.--.-', '&': '.-...', ':': '---...',
+            ';': '-.-.-.', '=': '-...-', '+': '.-.-.', '-': '-....-', '_': '..--.-',
+            '"': '.-..-.', '$': '...-..-', '@': '.--.-.', ' ': '/'
+        };
+        
+        const reverseMorseCode = Object.fromEntries(
+            Object.entries(morseCode).map(([key, value]) => [value, key])
+        );
+
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function encodeText() {
+            const input = document.getElementById("inputBox").value.trim().toUpperCase();
+            if (!input) {
+                showAlert('Please enter text to encode', 'warning');
+                return;
+            }
+            
+            const output = input.split('').map(char => {
+                if (morseCode[char] !== undefined) {
+                    return morseCode[char];
+                } else if (char === ' ') {
+                    return '/';
+                } else {
+                    return `[${char}]`; // Mark unsupported characters
+                }
+            }).join(' ');
+            
+            document.getElementById("outputBox").value = output;
+            showAlert('Text encoded to Morse code!', 'success');
+        }
+
+        function decodeText() {
+            const input = document.getElementById("inputBox").value.trim();
+            if (!input) {
+                showAlert('Please enter Morse code to decode', 'warning');
+                return;
+            }
+            
+            // Handle both slash and pipe as word separators
+            const normalizedInput = input.replace(/\|/g, '/');
+            
+            const output = normalizedInput.split(' ').map(code => {
+                if (reverseMorseCode[code] !== undefined) {
+                    return reverseMorseCode[code];
+                } else if (code === '/') {
+                    return ' ';
+                } else {
+                    return ''; // Skip unsupported Morse codes
+                }
+            }).join('');
+            
+            document.getElementById("outputBox").value = output;
+            showAlert('Morse code decoded to text!', 'success');
+        }
+
+        function clearText() {
+            document.getElementById("inputBox").value = '';
+            document.getElementById("outputBox").value = '';
+            showAlert('Cleared all text', 'info');
+        }
+
+        function copyOutput() {
+            const outputBox = document.getElementById("outputBox");
+            outputBox.select();
+            document.execCommand("copy");
+            
+            // Visual feedback
+            const copyBtn = document.querySelector('[onclick="copyOutput()"]');
+            copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+            }, 2000);
+            
+            showAlert('Copied to clipboard!', 'success');
+        }
+
+        function speakOutput() {
+            const output = document.getElementById("outputBox").value;
+            if (!output) {
+                showAlert('No output to read', 'warning');
+                return;
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(output);
+            utterance.rate = 0.9;
+            speechSynthesis.speak(utterance);
+            
+            showAlert('Reading output aloud...', 'info');
+        }
+
+        function playMorse() {
+            const output = document.getElementById("outputBox").value;
+            if (!output) {
+                showAlert('No Morse code to play', 'warning');
+                return;
+            }
+            
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const dot = 1.2 / 15; // Duration of a dot
+            
+            let time = audioContext.currentTime;
+            
+            // Space between characters
+            const charSpace = dot * 3; 
+            // Space between words
+            const wordSpace = dot * 7; 
+            
+            const oscillator = audioContext.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 600;
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(0, time);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            
+            for (const char of output) {
+                if (char === '.') {
+                    // Dot: 1 unit
+                    gainNode.gain.setValueAtTime(1, time);
+                    time += dot;
+                    gainNode.gain.setValueAtTime(0, time);
+                } else if (char === '-') {
+                    // Dash: 3 units
+                    gainNode.gain.setValueAtTime(1, time);
+                    time += dot * 3;
+                    gainNode.gain.setValueAtTime(0, time);
+                } else if (char === ' ') {
+                    // Space between letters: 3 units (but already 1 from previous)
+                    time += dot * 2;
+                } else if (char === '/') {
+                    // Space between words: 7 units (but already 1 from previous)
+                    time += dot * 6;
+                }
+                
+                // Space between symbols: 1 unit
+                time += dot;
+            }
+            
+            oscillator.stop(time + 1);
+            showAlert('Playing Morse code sound...', 'info');
+        }
+
+        function showAlert(message, type) {
+            // In a real app, you might want to implement a proper alert system
+            console.log(`${type.toUpperCase()}: ${message}`);
+        }
+
+        // Add animation to the main buttons on hover
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.classList.add('pulse');
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.classList.remove('pulse');
+            });
+        });
+    </script>
+</body>
+</html>
