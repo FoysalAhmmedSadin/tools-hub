@@ -10,14 +10,14 @@
 html{scroll-behavior:smooth;}
 body{background:linear-gradient(135deg,#f0f3f8,#d9e2ef);display:flex;justify-content:center;padding:20px;}
 .container{background:rgba(255,255,255,0.25);backdrop-filter:blur(20px);border-radius:25px;box-shadow:0 10px 40px rgba(0,0,0,0.12);padding:20px;max-width:500px;width:100%;text-align:center;}
-.nav-box{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:15px;padding:8px 12px;margin-bottom:20px;box-shadow:0 3px 10px rgba(0,0,0,0.08);}
-.logo{display:flex;align-items:center;gap:6px;font-weight:600;font-size:16px;color:#0a0a0a;}
-.logo img{width:24px;height:24px;}
-.nav-links{display:flex;gap:12px;}
-.nav-links a{display:flex;align-items:center;gap:4px;text-decoration:none;font-weight:500;color:#0a0a0a;font-size:13px;transition:color 0.3s ease;}
+.nav-box{display:flex;justify-content:space-around;align-items:center;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:15px;padding:15px 20px;margin-bottom:20px;box-shadow:0 3px 10px rgba(0,0,0,0.08);}
+.nav-links{display:flex;justify-content:space-around;width:100%;}
+.nav-links a{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#0a0a0a;font-weight:500;font-size:13px;transition:color 0.3s ease;}
 .nav-links a:hover{color:#34C759;}
-.page-logo{display:flex;justify-content:center;margin-bottom:15px;}
-.page-logo img{width:60px;height:60px;border-radius:50%;border:2px solid #34C759;padding:5px;}
+.nav-links a span{margin-top:4px;font-size:12px;}
+.page-logo{display:flex;flex-direction:column;align-items:center;margin-bottom:15px;}
+.page-logo img{width:100px;height:100px;border-radius:50%;border:2px solid #34C759;padding:5px;}
+.page-logo span{margin-top:10px;font-size:20px;font-weight:600;color:#0a0a0a;}
 section{margin:30px 0;padding:15px;border-radius:18px;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);box-shadow:0 3px 12px rgba(0,0,0,0.08);}
 section h2{margin-bottom:12px;font-size:20px;color:#0a0a0a;}
 section p{font-size:14px;color:#333;}
@@ -38,21 +38,20 @@ footer{margin-top:20px;font-size:12px;color:#555;text-align:center;}
 <body>
 <div class="container">
 <div class="nav-box">
-<div class="logo">
 <div class="nav-links">
-<a href="#home">🏠 Home</a>
-<a href="#about">ℹ️ About</a>
-<a href="#services">🛠️ Services</a>
-<a href="#contact">✉️ Contact</a>
+<a href="#home">🏠<span>Home</span></a>
+<a href="#about">ℹ️<span>About</span></a>
+<a href="#services">🛠️<span>Services</span></a>
+<a href="#contact">✉️<span>Contact</span></a>
 </div>
 </div>
+
 <div class="page-logo">
-<img src="https://i.ibb.co.com/sdgDnyXh/IMG-20250320-204112-347.jpg" alt="Angular Logo">
+<img src="https://i.ibb.co.com/sdgDnyXh/IMG-20250320-204112-347.jpg" alt="Logo">
+<span>My Tools Hub</span>
 </div>
-<h1>My Tools Hub</h1>
+
 <section id="home">
-<h2>Home</h2>
-<p>Welcome to My Tools Hub! Explore your favorite tools below.</p>
 <div class="tools-grid">
 <a href="https://cc-genarator.netlify.app/" class="tool-btn">CC GEN</a>
 <a href="cc-chk.html" class="tool-btn">LIVE CHECKER</a>
@@ -68,16 +67,18 @@ footer{margin-top:20px;font-size:12px;color:#555;text-align:center;}
 </template>
 </div>
 </section>
+
 <section id="about">
 <h2>About</h2>
 <p>Welcome to My Tools Hub, your one-stop online destination for a variety of practical and easy-to-use tools. Our platform is designed to simplify everyday tasks, increase productivity, and provide a seamless experience for all users. Whether you are looking for quick utilities, calculators, generators, or other helpful resources, My Tools Hub brings everything together in a clean and modern iOS-style interface. Explore our tools and enjoy a fast, reliable, and user-friendly digital workspace.</p>
 </section>
+
 <section id="services">
 <h2>Services</h2>
 <p>We provide various online tools to help you perform tasks efficiently and quickly.</p>
 </section>
+
 <section id="contact">
-<h2>Contact</h2>
 <div class="contact-container">
 <form id="contactForm">
 <input type="text" name="name" placeholder="Your Name" required>
@@ -87,9 +88,11 @@ footer{margin-top:20px;font-size:12px;color:#555;text-align:center;}
 </form>
 </div>
 </section>
+
 <footer>©2025 | All rights reserved</footer>
 <div class="toast" id="toast">Message sent successfully!</div>
 </div>
+
 <script>
 const form=document.getElementById('contactForm');
 const toast=document.getElementById('toast');
