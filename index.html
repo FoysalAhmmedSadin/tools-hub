@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,100 +9,283 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'SF Pro Display',sans-serif;}
 html{scroll-behavior:smooth;}
-body{background:linear-gradient(135deg,#f0f3f8,#d9e2ef);display:flex;justify-content:center;padding:20px;}
-.container{background:rgba(255,255,255,0.25);backdrop-filter:blur(20px);border-radius:25px;box-shadow:0 10px 40px rgba(0,0,0,0.12);padding:20px;max-width:500px;width:100%;text-align:center;}
-.nav-box{display:flex;justify-content:space-around;align-items:center;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:15px;padding:15px 20px;margin-bottom:20px;box-shadow:0 3px 10px rgba(0,0,0,0.08);}
-.nav-links{display:flex;justify-content:space-around;width:100%;}
-.nav-links a{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#0a0a0a;font-weight:500;font-size:13px;transition:color 0.3s ease;}
-.nav-links a:hover{color:#34C759;}
-.nav-links a span{margin-top:4px;font-size:12px;}
-.page-logo{display:flex;flex-direction:column;align-items:center;margin-bottom:15px;}
-.page-logo img{width:100px;height:100px;border-radius:50%;border:2px solid #34C759;padding:5px;}
-.page-logo span{margin-top:10px;font-size:20px;font-weight:600;color:#0a0a0a;}
-section{margin:30px 0;padding:15px;border-radius:18px;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);box-shadow:0 3px 12px rgba(0,0,0,0.08);}
-section h2{margin-bottom:12px;font-size:20px;color:#0a0a0a;}
-section p{font-size:14px;color:#333;}
-.tools-grid{display:flex;flex-direction:column;gap:14px;margin-top:15px;}
-.tool-btn{display:flex;justify-content:center;align-items:center;background:#34C759;border:2px solid #34C759;border-radius:14px;color:#fff;font-weight:500;font-size:15px;text-decoration:none;padding:16px;box-shadow:0 5px 15px rgba(0,0,0,0.12);transition:all 0.3s ease;width:100%;}
-.tool-btn:hover{background:#28a745;transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+body{background:#0a0a0a;color:#00ff88;overflow-x:hidden;}
+
+/* Header Fixed */
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 25px;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(10px);
+  z-index:1003;
+}
+.logo{font-size:22px;font-weight:600;color:#00ff88;}
+.menu-toggle{
+  font-size:28px;
+  cursor:pointer;
+  color:#34C759;
+  background:none;
+  border:none;
+  z-index:1004;
+  position:relative;
+}
+
+/* Overlay when menu open */
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(6px);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:1002;
+}
+.overlay.active{opacity:1;visibility:visible;}
+
+/* Side Menu */
+.side-menu{
+  position:fixed;
+  top:0;
+  right:-260px;
+  width:240px;
+  height:100%;
+  background:rgba(17,17,17,0.6);
+  backdrop-filter:blur(15px);
+  border-left:2px solid #34C759;
+  transition:0.3s;
+  padding:60px 20px;
+  z-index:1002;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.side-menu.active{right:0;}
+.side-menu a{
+  display:block;
+  text-decoration:none;
+  color:#00ff88;
+  font-size:18px;
+  padding:14px;
+  margin:12px 0;
+  border-radius:12px;
+  background:rgba(255,255,255,0.05);
+  text-align:center;
+  transition: all 0.3s ease;
+  backdrop-filter:blur(6px);
+  box-shadow:0 4px 15px rgba(0,255,136,0.3);
+}
+.side-menu a:hover{
+  background:rgba(52,199,89,0.8);
+  color:#111;
+  box-shadow:0 0 15px #34C759,0 0 25px #00ff88;
+  transform:translateY(-2px) scale(1.05);
+}
+
+/* Container scrollable */
+.container{
+  margin-top:70px;
+  padding:20px;
+  max-width:800px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Sections */
+section{
+  margin:30px 0;
+  padding:30px 20px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(8px);
+  box-shadow:0 3px 12px rgba(0,0,0,0.3);
+  text-align:center;
+}
+section h2{margin-bottom:12px;font-size:28px;color:#00ff88;}
+section p{font-size:14px;color:#00ff88;}
+
+/* Telegram Section Button */
+#telegram .tool-btn{
+  display:inline-block;
+  text-decoration:none;
+  background: #1a1a1a;
+  color: #34C759;
+  padding: 20px 40px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  margin-top: 20px;
+}
+#telegram .tool-btn:hover{
+  background: #34C759;
+  color: #111;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 15px #34C759,0 0 25px #00ff88;
+}
+
+/* Tools Grid */
+.tools-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+.tool-btn {
+  display: block;
+  text-decoration:none;
+  background: #1a1a1a;
+  color: #34C759;
+  padding: 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.tool-btn:hover {
+  background: #34C759;
+  color: #111;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 15px #34C759,0 0 25px #00ff88;
+}
+.tool-gap{width:50%;}
+
+/* Contact Form */
 .contact-container{display:flex;justify-content:center;margin-top:20px;}
-#contactForm{display:flex;flex-direction:column;width:100%;max-width:400px;gap:14px;background:rgba(255,255,255,0.2);backdrop-filter:blur(15px);padding:20px;border-radius:20px;box-shadow:0 5px 20px rgba(0,0,0,0.1);}
-#contactForm input,#contactForm textarea{padding:14px;border-radius:15px;border:2px solid rgba(52,199,89,0.5);outline:none;font-size:14px;width:100%;background:rgba(255,255,255,0.25);resize:none;}
+#contactForm{display:flex;flex-direction:column;width:100%;max-width:400px;gap:14px;
+  background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);padding:20px;border-radius:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.4);}
+#contactForm input,#contactForm textarea{padding:14px;border-radius:15px;
+  border:2px solid rgba(52,199,89,0.5);outline:none;font-size:14px;width:100%;
+  background:rgba(0,0,0,0.5);color:#00ff88;resize:none;}
 #contactForm textarea{min-height:100px;}
-#contactForm button{padding:14px;border-radius:15px;border:2px solid #34C759;background-color:#34C759;color:#fff;font-weight:500;cursor:pointer;transition:all 0.3s ease;}
+#contactForm button{padding:14px;border-radius:15px;border:2px solid #34C759;
+  background-color:#34C759;color:#111;font-weight:500;cursor:pointer;transition:0.3s;}
 #contactForm button:hover{background-color:#28a745;transform:translateY(-2px);}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#34C759;color:#fff;padding:14px 20px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.2);opacity:0;pointer-events:none;transition:opacity 0.5s;}
+
+/* Toast */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+  background:#34C759;color:#111;padding:14px 20px;border-radius:12px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity 0.5s;}
 .toast.show{opacity:1;pointer-events:auto;}
-footer{margin-top:20px;font-size:12px;color:#555;text-align:center;}
+
+footer{margin-top:20px;font-size:12px;color:#888;text-align:center;}
 </style>
 </head>
 <body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">My Tools Hub</div>
+  <button class="menu-toggle">☰</button>
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Side Menu -->
+<div class="side-menu" id="sideMenu">
+  <a href="#home">Home</a>
+  <a href="developer.html">Developer</a>
+  <a href="services.html">Services</a>
+  <a href="#contact">Contact</a>
+  <a href="about.html">About</a>
+</div>
+
+<!-- Main Content -->
 <div class="container">
-<div class="nav-box">
-<div class="nav-links">
-<a href="#home">🏠<span>Home</span></a>
-<a href="#about">ℹ️<span>About</span></a>
-<a href="#services">🛠️<span>Services</span></a>
-<a href="#contact">✉️<span>Contact</span></a>
-</div>
-</div>
-
-<div class="page-logo">
-<img src="https://i.ibb.co.com/sdgDnyXh/IMG-20250320-204112-347.jpg" alt="Logo">
-<span>My Tools Hub</span>
-</div>
-
-<section id="home">
-<div class="tools-grid">
-<a href="https://cc-genarator.netlify.app/" class="tool-btn">CC GEN</a>
-<a href="cc-chk.html" class="tool-btn">LIVE CHECKER</a>
-<a href="bin-lookup.html" class="tool-btn">BIN LOOKUP</a>
-<a href="bingen.html" class="tool-btn">BIN GEN</a>
-<a href="GeoIP.html" class="tool-btn">GEO IP</a>
-<a href="morse.html" class="tool-btn">MORSE CODE</a>
 <template>
-<a href="bingen.html" class="tool-btn">BIN GEN</a>
-<a href="binlook.html" class="tool-btn">BIN LOOKUP</a>
-<a href="glass-index.html" class="tool-btn">CC GEN</a>
-<a href="https://foysalahmmedsadin.github.io/cc-gen/" class="tool-btn">CC GEN</a>
-</template>
-</div>
-</section>
+  <!-- Telegram Section -->
+  <section id="telegram">
+    <h2>Join Telegram Channel</h2>
+    <p>Join our Telegram channel to get all website updates or for any support.</p>
+    <a href="https://t.me/YOUR_TELEGRAM_LINK" target="_blank" class="tool-btn">Join Now</a>
+  </section>
+  </template>
 
-<section id="about">
-<h2>About</h2>
-<p>Welcome to My Tools Hub, your one-stop online destination for a variety of practical and easy-to-use tools. Our platform is designed to simplify everyday tasks, increase productivity, and provide a seamless experience for all users. Whether you are looking for quick utilities, calculators, generators, or other helpful resources, My Tools Hub brings everything together in a clean and modern iOS-style interface. Explore our tools and enjoy a fast, reliable, and user-friendly digital workspace.</p>
-</section>
+  <!-- Home Section -->
+  <section id="home">
+    <h2>Home</h2>
+    <p>Welcome to My Tools Hub! Explore the tools below:</p>
+    <div class="tools-container">
+      <a href="https://cc-genarator.netlify.app/" class="tool-btn">CC GEN</a>
+      <div class="tool-gap"></div>
+      <a href="cc-chk.html" class="tool-btn">LIVE CHECKER</a>
+      <div class="tool-gap"></div>
+      <a href="bin-lookup.html" class="tool-btn">BIN LOOKUP</a>
+      <div class="tool-gap"></div>
+      <a href="bingen.html" class="tool-btn">BIN GEN</a>
+      <div class="tool-gap"></div>
+      <a href="GeoIP.html" class="tool-btn">GEO IP</a>
+      <div class="tool-gap"></div>
+      <a href="morse.html" class="tool-btn">MORSE CODE</a>
+    </div>
+  </section>
 
-<section id="services">
-<h2>Services</h2>
-<p>We provide various online tools to help you perform tasks efficiently and quickly.</p>
-</section>
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="contact-container">
+      <form id="contactForm" method="POST" action="YOUR_WEB_APP_URL">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
 
-<section id="contact">
-<div class="contact-container">
-<form id="contactForm">
-<input type="text" name="name" placeholder="Your Name" required>
-<input type="email" name="email" placeholder="Your Email" required>
-<textarea name="message" placeholder="Your Message" required></textarea>
-<button type="submit">Send Message</button>
-</form>
-</div>
-</section>
-
-<footer>©2025 | All rights reserved</footer>
-<div class="toast" id="toast">Message sent successfully!</div>
+  <footer>©2025 | All rights reserved.</footer>
+  <div class="toast" id="toast">Message sent successfully!</div>
 </div>
 
 <script>
-const form=document.getElementById('contactForm');
-const toast=document.getElementById('toast');
-form.addEventListener('submit',function(e){
-e.preventDefault();
-if(!form.name.value.trim()||!form.email.value.trim()||!form.message.value.trim()) return;
-form.reset();
-toast.classList.add('show');
-setTimeout(()=>{toast.classList.remove('show');},3000);
+// Side Menu Toggle
+const menuBtn = document.querySelector('.menu-toggle');
+const sideMenu = document.getElementById('sideMenu');
+const overlay = document.getElementById('overlay');
+
+menuBtn.addEventListener('click', () => {
+  sideMenu.classList.toggle('active');
+  overlay.classList.toggle('active');
+});
+
+overlay.addEventListener('click', () => {
+  sideMenu.classList.remove('active');
+  overlay.classList.remove('active');
+});
+
+// Contact Form & Toast with Google Sheets
+const form = document.getElementById('contactForm');
+const toast = document.getElementById('toast');
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  
+  fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form)
+  })
+  .then(response => {
+    form.reset();
+    toast.classList.add('show');
+    setTimeout(()=>{ toast.classList.remove('show'); }, 3000);
+  })
+  .catch(error => {
+    console.error('Error!', error.message);
+    alert('Something went wrong. Try again.');
+  });
 });
 </script>
 </body>
