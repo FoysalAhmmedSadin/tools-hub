@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | My Tools Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'SF Pro Display',sans-serif;}
+body{background:#0a0a0a;color:#00ff88;overflow-x:hidden;}
+.container{padding:20px;max-width:800px;margin:80px auto;}
+section{margin:30px 0;padding:30px 20px;border-radius:18px;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);box-shadow:0 3px 12px rgba(0,0,0,0.3);text-align:center;}
+section h2{margin-bottom:12px;font-size:28px;color:#00ff88;}
+section p{font-size:14px;color:#00ff88;}
+footer{margin-top:20px;font-size:12px;color:#888;text-align:center;}
+.header{position:fixed;top:0;left:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:15px 25px;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);z-index:1003;}
+.logo{font-size:22px;font-weight:600;color:#00ff88;}
+.menu-toggle{font-size:28px;cursor:pointer;color:#34C759;background:none;border:none;z-index:1004;position:relative;}
+.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:0.3s;z-index:1002;}
+.overlay.active{opacity:1;visibility:visible;}
+.side-menu{position:fixed;top:0;right:-260px;width:240px;height:100%;background:rgba(17,17,17,0.6);backdrop-filter:blur(15px);border-left:2px solid #34C759;transition:0.3s;padding:60px 20px;z-index:1002;display:flex;flex-direction:column;justify-content:flex-start;}
+.side-menu.active{right:0;}
+.side-menu a{display:block;text-decoration:none;color:#00ff88;font-size:18px;padding:14px;margin:12px 0;border-radius:12px;background:rgba(255,255,255,0.05);text-align:center;transition: all 0.3s ease;backdrop-filter:blur(6px);box-shadow:0 4px 15px rgba(0,255,136,0.3);}
+.side-menu a:hover{background:rgba(52,199,89,0.8);color:#111;box-shadow:0 0 15px #34C759,0 0 25px #00ff88;transform:translateY(-2px) scale(1.05);}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">My Tools Hub</div>
+  <button class="menu-toggle">☰</button>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="side-menu" id="sideMenu">
+  <a href="index.html">Home</a>
+<a href="developer.html">Developer</a>
+<a href="services.html">Services</a>
+<a href="index.html#contact">Contact</a>
+<a href="about.html">About</a>
+</div>
+
+<div class="container">
+  <section>
+    <h2>About</h2>
+    <p>Welcome to My Tools Hub! This is your one-stop platform for all online tools. We provide fast, reliable, and user-friendly digital solutions to simplify your tasks and increase productivity. Explore the website to find various tools for everyday use.</p>
+  </section>
+</div>
+
+<footer>©2025 | All rights reserved</footer>
+
+<script>
+const menuBtn = document.querySelector('.menu-toggle');
+const sideMenu = document.getElementById('sideMenu');
+const overlay = document.getElementById('overlay');
+
+menuBtn.addEventListener('click', () => {
+  sideMenu.classList.toggle('active');
+  overlay.classList.toggle('active');
+});
+overlay.addEventListener('click', () => {
+  sideMenu.classList.remove('active');
+  overlay.classList.remove('active');
+});
+</script>
+
+</body>
+</html>
